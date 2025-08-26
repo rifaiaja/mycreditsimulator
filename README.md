@@ -36,7 +36,11 @@ Go to folder bin and type this script :
 
 ![Logo](images/cmd2.jpg)
 
-Please choose 1-3 option and follow the instructions
+Please choose 1-3 option and follow the instructions.
+
+Example result
+-
+![Logo](images/cmd3.jpg)
 
 Sample input file format sample_inputs.txt (comma separated per line):
 -
