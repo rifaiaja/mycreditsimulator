@@ -20,10 +20,13 @@ How to running this app?
 ---
 Before running and try, make sure already create package, you can run from IntelliJ Idea.
 File - Run - Edit Configurations - in command line type (clean package) or mvn clean package
+
 ![Logo](images/intellij.jpg)
+
 And make sure file with name credit-simulator-1.0.0-shaded.jar created.
+
 ![Logo](images/explorer.jpg)
----
+
 There are 2 ways :
 1. Running from bat file (windows)
 2. Running from bat file (windows) using parameter sample_inputs.txt
@@ -32,11 +35,13 @@ There are 2 ways :
 
 Go to folder bin and type this script : 
 1. .\credit_simulator
-2. .\credit_simulator sample_inputs.txt 
+2. .\credit_simulator ../sample_inputs.txt 
 
 ![Logo](images/cmd2.jpg)
 
-Please choose 1-3 option and follow the instructions.
+Please choose 1-3 option and follow the instructions or running with input data file directly
+
+![Logo](images/cmd4.jpg)
 
 Example result
 -
