@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Usage: ./credit_simulator [file_inputs.txt]
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+JAR="$BASE_DIR/original-credit-simulator-1.0.0-shaded.jar"
+if [ ! -f "$JAR" ]; then
+  echo "JAR not found. Please run: mvn package"
+  exit 1
+fi
+
+if [ "$#" -eq 0 ]; then
+  java -jar "$JAR"
+else
+  java -jar "$JAR" "$1"
+fi
