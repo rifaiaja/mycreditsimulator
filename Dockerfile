@@ -3,7 +3,7 @@
 # ---------------------------
 # Stage 1: Build with Maven
 # ---------------------------
-FROM maven:3.8.5-openjdk-17-slim AS build
+FROM maven:3.6.3-jdk-8 AS build
 
 WORKDIR /workspace
 
@@ -19,7 +19,7 @@ RUN mvn -B clean package -DskipTests
 # ---------------------------
 # Stage 2: Runtime
 # ---------------------------
-FROM eclipse-temurin:17-jre-jammy
+FROM openjdk:8-jre-slim
 
 WORKDIR /app
 
