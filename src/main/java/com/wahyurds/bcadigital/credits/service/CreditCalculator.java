@@ -9,9 +9,7 @@ public class CreditCalculator {
 
     /**
      * validate input
-     * @param type
      * @param condition
-     * @param year
      * @param loanAmount
      * @param tenorYears
      * @param dpAmount

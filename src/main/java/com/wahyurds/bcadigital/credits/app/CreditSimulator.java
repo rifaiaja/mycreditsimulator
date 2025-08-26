@@ -1,8 +1,10 @@
 package com.wahyurds.bcadigital.credits.app;
 
 import com.wahyurds.bcadigital.credits.model.Condition;
+import com.wahyurds.bcadigital.credits.model.JsonResponse;
 import com.wahyurds.bcadigital.credits.model.VehicleType;
 import com.wahyurds.bcadigital.credits.service.CreditCalculator;
+import com.wahyurds.bcadigital.credits.service.JsonLoader;
 import com.wahyurds.bcadigital.credits.util.InputParser;
 
 import java.io.BufferedReader;
@@ -15,13 +17,33 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class CreditSimulator {
+    private static final String EXISTING_CALC_URL = "https://mocki.io/v1/ad614fa5-bda3-46df-9c82-57d216982f86";
 
     public static void main(String[] args) {
         try {
+            //if execute from file input directly
             if (args.length >= 1) {
                 runFromFile(args[0]);
-            } else {
-                runInteractive();
+            } else { //if execute as usual
+                Scanner choice = new Scanner(System.in);
+                while (true) {
+                    System.out.println("=====================================================");
+                    System.out.println("=== BCA DIGITAL Vehicle Loan Simulator (by Wahyu) ===");
+                    System.out.println("=== 1. Interactive ===");
+                    System.out.println("=== 2. Load data from json url ===");
+                    System.out.println("=== 3. Load data from input text ===");
+                    System.out.print("Choose menu (1-3): ");
+                    int resChoice = choice.nextInt();
+                    if (resChoice == 1) {
+                        runInteractive();
+                    } else if (resChoice == 2) {
+                        runFromUrl();
+                    } else if (resChoice == 3) {
+                        runFromFile("../sample_inputs.txt");
+                    } else {
+                        System.out.println("Pilihan tidak valid, silakan coba lagi.\n");
+                    }
+                }
             }
         } catch (Exception ex) {
             System.err.println("Error: " + ex.getMessage());
@@ -29,10 +51,11 @@ public class CreditSimulator {
     }
 
     /**
-     * This fucntion for running data from file
+     * This function for running calculate data from file
      * @param filePath
      */
     private static void runFromFile(String filePath) {
+        System.out.println("Credit Simulator (Load data from input text).");
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             int idx = 0;
@@ -49,6 +72,10 @@ public class CreditSimulator {
         }
     }
 
+    /**
+     * This function for running calculate interactive
+     * @throws Exception
+     */
     private static void runInteractive() throws Exception {
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
         System.out.println("Credit Simulator (interactive).");
@@ -66,29 +93,59 @@ public class CreditSimulator {
         System.out.print("Jumlah DP: ");
         String downPayment = scanner.nextLine();
 
-        String combined = String.join(",", vehicleType, vehicleCondition, vehicleYear, totalLoanAmount, loanTenure, downPayment);
-        //processLine(combined, 1);
+        CreditCalculator.validateInputs(vehicleCondition == null ? Condition.BEKAS : Condition.fromString(vehicleCondition), Long.valueOf(totalLoanAmount), Integer.valueOf(loanTenure), Long.valueOf(downPayment));
         BigDecimal financed = new BigDecimal(totalLoanAmount).subtract(new BigDecimal(downPayment));
         if (financed.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Jumlah pembiayaan (total - DP) harus > 0");
         }
         BigDecimal baseAnnualRate = (vehicleType.equalsIgnoreCase(VehicleType.MOBIL.toString())) ? new BigDecimal("8.0") : new BigDecimal("9.0");
-        CreditCalculator.validateInputs(vehicleCondition == null ? Condition.BEKAS : Condition.fromString(vehicleCondition), Long.valueOf(totalLoanAmount), Integer.valueOf(loanTenure), Long.valueOf(downPayment));
         System.out.println("Tipe Kendaraan: " + vehicleType + ", Kondisi: " + vehicleCondition + ", Tenor: " + loanTenure + ", Tahun: " + vehicleYear + ", Tanda Jadi: " + downPayment);
         simulateAndPrintSchedule(financed, baseAnnualRate, Integer.parseInt(loanTenure));
     }
 
+    /**
+     * This function for running calculate data from url
+     * @throws Exception
+     */
+    private static void runFromUrl() throws Exception {
+        System.out.println("Credit Simulator (Load data from json url).");
+        System.out.println("Loading data...\n");
+        String jsonString = JsonLoader.runFromLoadJsonFromUrl(EXISTING_CALC_URL);
+        System.out.println("Loaded JSON:\n" + jsonString);
+        processLoadUrl(JsonLoader.fromJsonString(jsonString));
+    }
+
+    /**
+     * This function for process data from file
+     * @param line
+     */
     private static void processLine(String line) {
         InputParser.ParsedInput in = InputParser.parseLine(line);
+        CreditCalculator.validateInputs(in.vehicleCondition == null ? Condition.BEKAS : Condition.fromString(in.vehicleCondition.toString()), in.totalLoanAmount, in.loanTenure, in.downPayment);
         BigDecimal financed = new BigDecimal(in.totalLoanAmount).subtract(new BigDecimal(in.downPayment));
         if (financed.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Jumlah pembiayaan (total - DP) harus > 0");
         }
         BigDecimal baseAnnualRate = (in.vehicleType.toString().equalsIgnoreCase(VehicleType.MOBIL.toString())) ? new BigDecimal("8.0") : new BigDecimal("9.0");
-        CreditCalculator.validateInputs(in.vehicleCondition == null ? Condition.BEKAS : Condition.fromString(in.vehicleCondition.toString()), in.totalLoanAmount, in.loanTenure, in.downPayment);
         System.out.println("\n==========================");
         System.out.println("Tipe Kendaraan: " + in.vehicleType + ", Kondisi: " + in.vehicleCondition + ", Tenor: " + in.loanTenure +  ", Tahun: " + in.vehicleYear + ", Tanda Jadi: " + in.downPayment);
         simulateAndPrintSchedule(financed, baseAnnualRate, in.loanTenure);
+    }
+
+    /**
+     * This function for process data from url
+     * @param jsonResponse
+     */
+    private static void processLoadUrl(JsonResponse jsonResponse) {
+        CreditCalculator.validateInputs(jsonResponse.getVehicleCondition() == null ? Condition.BEKAS : Condition.fromString(jsonResponse.getVehicleCondition()), jsonResponse.getTotalLoanAmount(), jsonResponse.getLoanTenure(), jsonResponse.getDownPayment());
+        BigDecimal financed = new BigDecimal(jsonResponse.getTotalLoanAmount()).subtract(new BigDecimal(jsonResponse.getDownPayment()));
+        if (financed.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Jumlah pembiayaan (total - DP) harus > 0");
+        }
+        BigDecimal baseAnnualRate = (jsonResponse.getVehicleType().equalsIgnoreCase(VehicleType.MOBIL.toString())) ? new BigDecimal("8.0") : new BigDecimal("9.0");
+        System.out.println("\n==========================");
+        System.out.println("Tipe Kendaraan: " + jsonResponse.getVehicleType() + ", Kondisi: " + jsonResponse.getVehicleCondition() + ", Tenor: " + jsonResponse.getLoanTenure() +  ", Tahun: " + jsonResponse.getVehicleYear() + ", Tanda Jadi: " + jsonResponse.getDownPayment());
+        simulateAndPrintSchedule(financed, baseAnnualRate, jsonResponse.getLoanTenure());
     }
 
     /**
