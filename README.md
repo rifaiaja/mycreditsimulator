@@ -17,24 +17,24 @@ Build & run tests
 mvn clean package
 
 How to running this app?
--
+---
 Before running and try, make sure already create package, you can run from IntelliJ Idea.
 File - Run - Edit Configurations - in command line type (clean package) or mvn clean package
-![](C:\Users\wahyu\Downloads\test\intellij.jpg)
+![Logo](images\intellij.jpg)
 And make sure file with name credit-simulator-1.0.0-shaded.jar created.
-![](C:\Users\wahyu\Downloads\test\explorer.jpg)
+![Logo](images\explorer.jpg)
 ---
-There are 3 ways :
+There are 2 ways :
 1. Running from bat file (windows)
 2. Running from bat file (windows) using parameter sample_inputs.txt
 
-![](C:\Users\wahyu\Downloads\test\cmd.jpg)
+![Logo](images\cmd.jpg)
 
 Go to folder bin and type this script : 
 1. .\credit_simulator
 2. .\credit_simulator sample_inputs.txt 
 
-![](C:\Users\wahyu\Downloads\test\cmd2.jpg)
+![Logo](images\cmd2.jpg)
 
 Please choose 1-3 option and follow the instructions
 
