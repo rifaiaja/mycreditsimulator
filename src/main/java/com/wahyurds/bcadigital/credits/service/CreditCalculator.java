@@ -16,7 +16,7 @@ public class CreditCalculator {
      * @param tenorYears
      * @param dpAmount
      */
-    public static void validateInputs(VehicleType type, Condition condition, int year, long loanAmount, int tenorYears, long dpAmount) {
+    public static void validateInputs(Condition condition, long loanAmount, int tenorYears, long dpAmount) {
         if (loanAmount <= 0 || loanAmount > MAX_LOAN) {
             throw new IllegalArgumentException("Jumlah pinjaman harus >0 dan <= " + MAX_LOAN);
         }
@@ -42,7 +42,6 @@ public class CreditCalculator {
         long principal = loanAmount - dpAmount;
         if (principal <= 0) return 0.0;
         double totalInterest = principal * rate * tenorYears;
-        double monthly = (principal + totalInterest) / (tenorYears * 12.0);
-        return monthly;
+        return (principal + totalInterest) / (tenorYears * 12.0);
     }
 }

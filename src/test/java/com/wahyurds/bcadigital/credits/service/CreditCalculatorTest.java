@@ -14,9 +14,9 @@ class CreditCalculatorTest {
         long dpOk = 35_000_000L;
         long dpBad = 34_000_000L;
         // should not throw
-        CreditCalculator.validateInputs(VehicleType.MOBIL, Condition.BARU, 2022, loan, 3, dpOk);
+        CreditCalculator.validateInputs(Condition.BARU, loan, 3, dpOk);
         assertThrows(IllegalArgumentException.class, () ->
-                CreditCalculator.validateInputs(VehicleType.MOBIL, Condition.BARU, 2022, loan, 3, dpBad));
+                CreditCalculator.validateInputs(Condition.BARU,  loan, 3, dpBad));
     }
 
     @Test

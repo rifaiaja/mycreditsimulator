@@ -6,8 +6,8 @@ public enum Condition {
     public static Condition fromString(String s) {
         if (s == null) throw new IllegalArgumentException("Kondisi kosong");
         String t = s.trim().toLowerCase();
-        if (t.startsWith("b") && t.contains("aru") || t.equals("baru")) return BARU;
-        if (t.startsWith("b") && t.contains("ekas") || t.equals("bekas") || t.equals("used")) return BEKAS;
+        if (t.startsWith("b") && t.contains("aru") || t.equals("baru") || t.equals("bru")) return BARU;
+        if (t.startsWith("b") && t.contains("ekas") || t.equals("bekas") || t.equals("used") || t.equals("bks")) return BEKAS;
         // fallback: check exact
         if ("baru".equals(t)) return BARU;
         if ("bekas".equals(t)) return BEKAS;
