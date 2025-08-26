@@ -1,4 +1,4 @@
-Credit Simulator By Wahyu
+BCA DIGITAL Credit Simulator by wahyu
 =========================
 
 Project Java (Java 1.8) console app to simulate monthly installments for vehicle loans.
@@ -6,28 +6,42 @@ Package: com.wahyurds.bcadigital.credits
 Build tool: Maven
 Test framework: JUnit 5
 
-Build & Test
-------------
-# Build & run tests
-mvn clean package
+# Welcome
 
-# Run JUnit tests only
+Run JUnit tests only
+-
 mvn test
 
-Run (interactive)
------------------
-# After mvn package a jar is created in target/
-java -jar target/credit-simulator-1.0.0-jar-with-dependencies.jar
+Build & run tests
+-
+mvn clean package
 
-Run with file input
--------------------
-# Provide file path as arg
-java -jar target/credit-simulator-1.0.0-jar-with-dependencies.jar sample_inputs.txt
+How to running this app?
+-
+Before running and try, make sure already create package, you can run from IntelliJ Idea.
+File - Run - Edit Configurations - in command line type (clean package) or mvn clean package
+![](C:\Users\wahyu\Downloads\test\intellij.jpg)
+And make sure file with name credit-simulator-1.0.0-shaded.jar created.
+![](C:\Users\wahyu\Downloads\test\explorer.jpg)
+---
+There are 3 ways :
+1. Running from bat file (windows)
+2. Running from bat file (windows) using parameter sample_inputs.txt
 
-Sample input file format (comma separated per line):
-Jenis,Kondisi,Tahun,JumlahPinjaman,Tenor,TandaJadi(DP)
-Contoh:
-motor,baru,2022,15000000,2,5250000
+![](C:\Users\wahyu\Downloads\test\cmd.jpg)
+
+Go to folder bin and type this script : 
+1. .\credit_simulator
+2. .\credit_simulator sample_inputs.txt 
+
+![](C:\Users\wahyu\Downloads\test\cmd2.jpg)
+
+Please choose 1-3 option and follow the instructions
+
+Sample input file format sample_inputs.txt (comma separated per line):
+-
+- Jenis,Kondisi,Tahun,JumlahPinjaman,Tenor,TandaJadi(DP)
+- motor,baru,2022,15000000,2,5250000
 
 Notes
 -----
