@@ -59,12 +59,13 @@
                         <phase>package</phase>
                         <goals><goal>shade</goal></goals>
                         <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.wahyurds.bcadigital.credits.app.CreditSimulator</mainClass>
                                 </transformer>
                             </transformers>
-                            <finalName>credit-simulator-1.0.0-shaded</finalName>
                         </configuration>
                     </execution>
                 </executions>

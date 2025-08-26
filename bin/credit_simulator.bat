@@ -1,5 +1,5 @@
 @echo off
-set JAR=%~dp0\original-credit-simulator-1.0.0-shaded.jar
+set JAR=%~dp0\credit-simulator-1.0.0-shaded.jar
 if not exist "%JAR%" (
   echo JAR not found. Please run: mvn package
   exit /b 1
